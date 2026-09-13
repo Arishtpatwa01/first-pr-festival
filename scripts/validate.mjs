@@ -39,6 +39,10 @@ for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".json"))) {
       fail(`"${key}" is still the template placeholder — put your own details in`);
     }
   }
+  const placeholderSkills = ["Skill One", "Skill Two", "Skill Three"];
+  if (Array.isArray(data.skills) && data.skills.some((s) => placeholderSkills.includes(s))) {
+    fail(`"skills" still contains a template placeholder ("Skill One" / "Skill Two" / "Skill Three") — list your real skills`);
+  }
 
   const user = String(data.githubUsername ?? "").toLowerCase();
   if (user) {
@@ -83,6 +87,34 @@ for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".html"))) {
   // four of exactly this in the first merge batch before this check existed.
   if (/^<{7}(\s|$)/m.test(raw) || /^={7}\s*$/m.test(raw) || /^>{7}(\s|$)/m.test(raw)) {
     fail("still contains unresolved Git conflict markers (<<<<<<<, =======, >>>>>>>) — resolve the conflict, don't just stage it");
+  }
+
+  // An unclosed <style> makes browsers swallow every element after it as
+  // raw CSS text — the card renders as a blank background with nothing
+  // else visible. Caught one exactly like this: valid-looking CSS, zero
+  // actual content on the roster.
+  const styleOpens = (body.match(/<style[\s>]/gi) ?? []).length;
+  const styleCloses = (body.match(/<\/style>/gi) ?? []).length;
+  if (styleOpens !== styleCloses) {
+    fail(
+      `<style> tag count doesn't match (${styleOpens} opened, ${styleCloses} closed) — an unclosed <style> ` +
+        `swallows everything after it as CSS text, so nothing else on the card would actually render`,
+    );
+  }
+
+  // Editing the four data- attributes is not the same as editing the card.
+  // A student can pass every other check while the VISIBLE alias/name/
+  // handle/skills are still the template's literal placeholder text.
+  const visiblePlaceholders = [
+    [">Your Spider-Alias<", "the alias heading is still \"Your Spider-Alias\""],
+    [">Your Name<", "the name line is still \"Your Name\""],
+    [">@your-github-username<", "the handle is still \"@your-github-username\""],
+    [">Skill One<", "the skills list still says \"Skill One\" / \"Skill Two\" / \"Skill Three\""],
+  ];
+  for (const [needle, msg] of visiblePlaceholders) {
+    if (body.includes(needle)) {
+      fail(`filled in the data- attributes but not the card itself — ${msg}. Edit the visible text, not just the attributes.`);
+    }
   }
 
   const attr = (name) => {
