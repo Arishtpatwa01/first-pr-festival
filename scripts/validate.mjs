@@ -76,6 +76,14 @@ for (const file of fs.readdirSync(dir).filter((f) => f.endsWith(".html"))) {
   if (!/<style[\s>]/i.test(body)) {
     fail("has no <style> block — the CSS must be internal, inside the card");
   }
+  // Real leftover Git conflict markers — a student who ran `git add .` on a
+  // conflicted file without actually resolving it (or copy-pasted content
+  // that still had markers in it) would otherwise sail through every other
+  // check and ship a broken-looking card straight to the live roster. Caught
+  // four of exactly this in the first merge batch before this check existed.
+  if (/^<{7}(\s|$)/m.test(raw) || /^={7}\s*$/m.test(raw) || /^>{7}(\s|$)/m.test(raw)) {
+    fail("still contains unresolved Git conflict markers (<<<<<<<, =======, >>>>>>>) — resolve the conflict, don't just stage it");
+  }
 
   const attr = (name) => {
     const m = body.match(new RegExp(`data-${name}\\s*=\\s*["']([^"']*)["']`, "i"));

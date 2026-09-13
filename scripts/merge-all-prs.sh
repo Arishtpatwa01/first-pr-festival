@@ -25,7 +25,7 @@ gh pr list --repo "$REPO" --state open --limit 300 \
 echo ""
 mergeable=$(gh pr list --repo "$REPO" --state open --limit 300 \
   --json number,statusCheckRollup \
-  --jq '[.[] | select(all(.statusCheckRollup[]?; .conclusion == "SUCCESS")) | .number] | length')
+  --jq '[.[] | select(([.statusCheckRollup[]? | select((.name // .context) == "scope" or (.name // .context) == "validate") | .conclusion] | length) == 2 and ([.statusCheckRollup[]? | select((.name // .context) == "scope" or (.name // .context) == "validate") | .conclusion] | all(. == "SUCCESS"))) | .number] | length')
 echo "→ $mergeable PR(s) have every check green and are safe to merge."
 echo ""
 
@@ -44,7 +44,7 @@ fi
 echo "Merging every PR with all checks green..."
 gh pr list --repo "$REPO" --state open --limit 300 \
   --json number,statusCheckRollup \
-  --jq '.[] | select(all(.statusCheckRollup[]?; .conclusion == "SUCCESS")) | .number' \
+  --jq '.[] | select(([.statusCheckRollup[]? | select((.name // .context) == "scope" or (.name // .context) == "validate") | .conclusion] | length) == 2 and ([.statusCheckRollup[]? | select((.name // .context) == "scope" or (.name // .context) == "validate") | .conclusion] | all(. == "SUCCESS"))) | .number' \
   | while read -r n; do
       echo "  merging #$n ..."
       gh pr merge "$n" --repo "$REPO" --squash --delete-branch --admin || \
