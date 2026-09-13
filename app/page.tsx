@@ -86,7 +86,7 @@ export default function Home() {
       <section id="roster" className="mx-auto max-w-6xl px-6 pt-16">
         <div className="mb-8 flex items-end justify-between border-b border-white/10 pb-4">
           <h2 className="font-display text-4xl uppercase tracking-wide text-white sm:text-5xl">
-            The <span className="text-web-scarlet">Roster</span>
+            Top <span className="text-web-scarlet">20</span>
           </h2>
           <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/35">
             live from /spider-society
