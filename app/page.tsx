@@ -2,6 +2,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import GlitchText from "@/components/GlitchText";
 import JoinPanel from "@/components/JoinPanel";
+import Leaderboard from "@/components/Leaderboard";
 import SocietyGrid from "@/components/SocietyGrid";
 import StatsBar from "@/components/StatsBar";
 import WebBackground from "@/components/WebBackground";
@@ -78,8 +79,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── LEADERBOARD ──────────────────────────────────────────── */}
+      <Leaderboard members={members} />
+
       {/* ── ROSTER ───────────────────────────────────────────────── */}
-      <section id="roster" className="mx-auto max-w-6xl px-6 pt-10">
+      <section id="roster" className="mx-auto max-w-6xl px-6 pt-16">
         <div className="mb-8 flex items-end justify-between border-b border-white/10 pb-4">
           <h2 className="font-display text-4xl uppercase tracking-wide text-white sm:text-5xl">
             The <span className="text-web-scarlet">Roster</span>
