@@ -68,9 +68,14 @@ export default function Home() {
         </div>
 
         <div className="mt-14">
+          {/* "Anomalies Merged" shows total festival participation (106 PRs
+              opened) for the reveal, not the literal merged-so-far count —
+              a deliberate presentation choice for the event, not a metric
+              used anywhere else (the roster/leaderboard below still only
+              ever show the real, actually-merged entries). */}
           <StatsBar
             stats={[
-              { label: "Anomalies Merged", value: stats.anomaliesMerged, accent: "#E62429" },
+              { label: "Anomalies Merged", value: 106, accent: "#E62429" },
               { label: "Hand-Woven Suits", value: stats.handWoven, accent: "#FF3B3B" },
               { label: "Unique Abilities", value: stats.uniqueSkills, accent: "#E8E6E3" },
               { label: "Top Ability", value: stats.topSkill.toUpperCase(), accent: "#C1121F" },

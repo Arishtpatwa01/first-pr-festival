@@ -82,7 +82,7 @@ export default function Leaderboard({ members }: { members: SpiderMember[] }) {
               className={`relative flex-1 ${style.order} ${style.lift} ${style.scale}`}
             >
               <div
-                className="relative rounded-3xl border p-5 pt-8"
+                className="relative rounded-3xl border p-5 pt-12"
                 style={{
                   borderColor: `${style.accent}55`,
                   background: `radial-gradient(circle at 50% 0%, ${style.accent}14, transparent 70%)`,
@@ -90,15 +90,15 @@ export default function Leaderboard({ members }: { members: SpiderMember[] }) {
                 }}
               >
                 <div
-                  className="absolute left-1/2 top-0 flex -translate-x-1/2 -translate-y-1/2 items-center gap-1.5 rounded-full border px-4 py-1.5 font-display text-sm uppercase tracking-wider"
+                  className="absolute left-1/2 top-0 flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 rounded-full border-2 px-6 py-3 font-display text-3xl uppercase tracking-wider sm:text-4xl"
                   style={{
                     background: "#08080A",
                     borderColor: style.accent,
                     color: style.accent,
-                    boxShadow: `0 0 24px -4px ${style.glow}`,
+                    boxShadow: `0 0 34px -4px ${style.glow}`,
                   }}
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="h-7 w-7 sm:h-8 sm:w-8" />
                   {style.label}
                 </div>
 
